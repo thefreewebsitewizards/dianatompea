@@ -478,7 +478,7 @@ if (mediaGrid) {
     mediaGrid.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
         isDragging = true;
-        stopMediaCarousel();
+        // stopMediaCarousel();
     });
     
     mediaGrid.addEventListener('touchmove', (e) => {
@@ -495,30 +495,30 @@ if (mediaGrid) {
         if (Math.abs(diffX) > 50) {
             if (diffX > 0) {
                 // Swipe left - next media
-                nextMedia();
+                // nextMedia();
             } else {
                 // Swipe right - previous media
-                const prevIndex = currentMedia - 1 < 0 ? mediaItems.length - 1 : currentMedia - 1;
-                showMedia(prevIndex);
+                // const prevIndex = currentMedia - 1 < 0 ? mediaItems.length - 1 : currentMedia - 1;
+                // showMedia(prevIndex);
             }
         }
         
         isDragging = false;
-        setTimeout(startMediaCarousel, 2000); // Restart carousel after swipe
+        // setTimeout(startMediaCarousel, 2000); // Restart carousel after swipe
     });
 }
 
 // Add keyboard navigation
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') {
-        const prevIndex = currentMedia - 1 < 0 ? mediaItems.length - 1 : currentMedia - 1;
-        showMedia(prevIndex);
-        stopMediaCarousel();
-        setTimeout(startMediaCarousel, 2000);
+        // const prevIndex = currentMedia - 1 < 0 ? mediaItems.length - 1 : currentMedia - 1;
+        // showMedia(prevIndex);
+        // stopMediaCarousel();
+        // setTimeout(startMediaCarousel, 2000);
     } else if (e.key === 'ArrowRight') {
-        nextMedia();
-        stopMediaCarousel();
-        setTimeout(startMediaCarousel, 2000);
+        // nextMedia();
+        // stopMediaCarousel();
+        // setTimeout(startMediaCarousel, 2000);
     }
 });
 
@@ -611,19 +611,23 @@ const mediaObserver = new IntersectionObserver((entries) => {
 });
 
 // Observe media items for scroll animations
-mediaItems.forEach((item, index) => {
-    item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-    mediaObserver.observe(item);
-});
-
-// Add glitch effect on media item click
-mediaItems.forEach(item => {
-    item.addEventListener('click', () => {
-        if (!item.classList.contains('active')) {
-            const index = Array.from(mediaItems).indexOf(item);
-            showMedia(index);
-            stopMediaCarousel();
-            setTimeout(startMediaCarousel, 3000);
-        }
+const mediaItemsForAnimation = document.querySelectorAll('.media-content');
+if (mediaItemsForAnimation.length > 0) {
+    mediaItemsForAnimation.forEach((item, index) => {
+        item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        mediaObserver.observe(item);
     });
-});
+
+    // Add glitch effect on media item click
+    mediaItemsForAnimation.forEach(item => {
+        item.addEventListener('click', () => {
+            if (!item.classList.contains('active')) {
+                const index = Array.from(mediaItemsForAnimation).indexOf(item);
+                // Note: showMedia and stopMediaCarousel functions would need to be defined
+                // showMedia(index);
+                // stopMediaCarousel();
+                // setTimeout(startMediaCarousel, 3000);
+            }
+        });
+    });
+}
